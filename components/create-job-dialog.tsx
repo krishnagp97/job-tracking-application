@@ -51,7 +51,6 @@ export default function CreateJobApplicationDialog({
           .map((tag) => tag.trim())
           .filter((tag) => tag.length > 0),
       });
-
       if (!result.error) {
         setFormData(INITIAL_FORM_DATA);
         setOpen(false);

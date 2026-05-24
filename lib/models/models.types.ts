@@ -1,5 +1,5 @@
 export interface JobApplication {
-    _id:String;
+    _id:string;
   company: string;
   position: string;
   location?: string;
