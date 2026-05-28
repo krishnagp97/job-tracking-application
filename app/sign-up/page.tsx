@@ -10,49 +10,132 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import {signUp} from '@/lib/auth/auth-client'
+import { signUp } from "@/lib/auth/auth-client";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import {  useState } from "react";
-
+import { useEffect, useState } from "react";
 
 export default function SignUp() {
-    const [name,setName] = useState("");
-    const [email,setEmail] = useState("");
-    const [password,setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    const [error,setError] = useState("");
-    const [loading,setLoading] = useState(false)
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-    const router = useRouter();
+  const [otp, setOtp] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpVerified, setOtpVerified] = useState(false);
+  const [sendingOtp, setSendingOtp] = useState(false);
 
-    async function handleSubmit(e: React.FormEvent){
-        e.preventDefault();
+  useEffect(() => {
+    setName("");
+    setEmail("");
+    setPassword("");
+    setOtp("");
+    setOtpSent(false);
+    setOtpVerified(false);
+    setError("");
+  }, []);
 
-        setError("");
-        setLoading(true)
+  const router = useRouter();
 
-        try {
-            const result = await signUp.email({
-                name,
-                email,
-                password
-            });
+  async function handleSendOtp() {
+    try {
+      setSendingOtp(true);
+      setError("");
 
-            if(result.error){
-                setError(result.error.message ?? "failed to sign up")
-            }else{
-                router.push("/dashboard")
-            }
-            
-        } catch (err) {
-            setError("an unexpected error occured")
-        }finally{
-            setLoading(false);
-        }
+      const res = await fetch("/api/send-otp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          name,
+        }),
+      });
 
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(
+          typeof data.error === "string"
+            ? data.error
+            : data.error?.message || "Something went wrong",
+        );
+        return;
+      }
+
+      setOtpSent(true);
+    } catch (err) {
+      setError("Failed to send OTP");
+    } finally {
+      setSendingOtp(false);
     }
+  }
+  async function handleVerifyOtp() {
+    try {
+      setError("");
+
+      const res = await fetch("/api/verify-otp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          otp,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(
+          typeof data.error === "string"
+            ? data.error
+            : data.error?.message || "Something went wrong",
+        );
+        return;
+      }
+
+      setOtpVerified(true);
+    } catch (err) {
+      setError("OTP verification failed");
+    }
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+
+    setError("");
+    setLoading(true);
+
+    try {
+      if (!otpVerified) {
+        setError("Please verify your email first");
+        setLoading(false);
+        return;
+      }
+      const result = await signUp.email({
+        name,
+        email,
+        password,
+      });
+
+      if (result.error) {
+        setError(result.error.message ?? "failed to sign up");
+      } else {
+        router.push("/dashboard");
+      }
+    } catch (err) {
+      setError("an unexpected error occured");
+    } finally {
+      setLoading(false);
+    }
+  }
   return (
     <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-white p-4">
       <Card className="w-full max-w-md border-gray-200 shadow-lg">
@@ -80,7 +163,7 @@ export default function SignUp() {
                 type="text"
                 placeholder="John doe"
                 value={name}
-                onChange={(e)=> setName(e.target.value)}
+                onChange={(e) => setName(e.target.value)}
                 required
                 className="border-gray-300 focus:border-primary focus:ring-primary"
               />
@@ -94,11 +177,52 @@ export default function SignUp() {
                 type="email"
                 placeholder="John@example.com"
                 value={email}
-                onChange={(e)=> setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setOtpVerified(false);
+                  setOtpSent(false);
+                  setOtp("");
+                }}
+                disabled={otpVerified}
                 required
                 className="border-gray-300 focus:border-primary focus:ring-primary"
               />
             </div>
+            <Button
+              type="button"
+              onClick={handleSendOtp}
+              disabled={sendingOtp || !email || !name || otpVerified}
+              className="w-full"
+            >
+              {sendingOtp ? "Sending OTP..." : "Send OTP"}
+            </Button>
+            {otpSent && !otpVerified && (
+              <div className="space-y-2">
+                <Label htmlFor="otp">OTP</Label>
+
+                <Input
+                  id="otp"
+                  type="text"
+                  placeholder="Enter OTP"
+                  value={otp}
+                  required
+                  onChange={(e) => setOtp(e.target.value)}
+                />
+
+                <Button
+                  type="button"
+                  onClick={handleVerifyOtp}
+                  className="w-full"
+                >
+                  Verify OTP
+                </Button>
+              </div>
+            )}
+            {otpVerified && (
+              <p className="text-sm font-medium text-green-600">
+                Email verified successfully
+              </p>
+            )}
             <div className="space-y-2">
               <Label htmlFor="password" className="text-gray-700">
                 Password
@@ -108,7 +232,7 @@ export default function SignUp() {
                 type="password"
                 value={password}
                 placeholder="John12#"
-                onChange={(e)=> setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 required
                 className="border-gray-300 focus:border-primary focus:ring-primary"
               />
@@ -118,9 +242,9 @@ export default function SignUp() {
             <Button
               type="submit"
               className="w-full bg-primary hover:bg-primary/90"
-              disabled={loading}
+              disabled={loading || !otpVerified}
             >
-              {loading ? "Creating account...":"Sign Up"}
+              {loading ? "Creating account..." : "Sign Up"}
             </Button>
             <p className="text-center text-sm text-gray-600">
               Already have an account?{" "}
