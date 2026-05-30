@@ -19,7 +19,7 @@ export default function ImageTab(){
             <div className="relative mx-auto max-w-5xl overflow-hidden rounded-lg border border-gray-200 shadow-xl">
               {activeTab === "organize" && (
                 <Image
-                  src="/hero-image/hero1.png"
+                  src="/hero-image/hero-1.png"
                   alt="Organize Applications"
                   width={1200}
                   height={800}
@@ -28,7 +28,7 @@ export default function ImageTab(){
 
               {activeTab === "hired" && (
                 <Image
-                  src="/hero-image/hero2.png"
+                  src="/hero-image/hero-2.png"
                   alt="Organize Applications"
                   width={1200}
                   height={800}
@@ -37,7 +37,7 @@ export default function ImageTab(){
 
               {activeTab === "boards" && (
                 <Image
-                  src="/hero-image/hero3.png"
+                  src="/hero-image/hero-3.png"
                   alt="Organize Applications"
                   width={1200}
                   height={800}
