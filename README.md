@@ -1,36 +1,230 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Job Application Tracker
 
-## Getting Started
+A full-stack job application management platform built with Next.js that helps users organize and track their job search process.
 
-First, run the development server:
+Users can manage applications across different stages of the hiring pipeline, move applications between stages using drag-and-drop, and gain insights through analytics and visual reports.
+
+---
+
+## 🚀 Features
+
+### Application Management
+
+- Create and manage job applications
+- Store company name, role, location, and notes
+- Track application progress throughout the hiring process
+
+### Workflow Tracking
+
+Manage applications across five stages:
+
+- Wishlist
+- Applied
+- Interviewing
+- Offer
+- Rejected
+
+### Drag and Drop
+
+- Smooth drag-and-drop functionality using DnD Kit
+- Move applications between stages instantly
+- Real-time UI updates
+
+### Authentication
+
+- Secure email authentication using Better Auth
+- Protected routes
+- User-specific application data
+
+### Analytics Dashboard
+
+- Interactive pie chart visualization
+- Total applications count
+- Active applications tracking
+- Interview rate calculation
+- Offer rate calculation
+- Success rate calculation
+
+### Responsive Design
+
+- Mobile-friendly UI
+- Clean and modern interface
+- Built with Shadcn UI and Tailwind CSS
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+- Next.js 16
+- React 19
+- TypeScript
+- Tailwind CSS
+- Shadcn UI
+
+### Backend
+
+- Next.js Route Handlers
+- Server Components
+- Better Auth
+
+### Database
+
+- MongoDB
+- Mongoose
+
+### Charts & Analytics
+
+- Recharts
+
+### Drag and Drop
+
+- DnD Kit
+
+### Email Services
+
+- Resend
+
+---
+
+## ✨ Key Highlights
+
+- Kanban-style job application workflow
+- Drag-and-drop application management
+- Interactive analytics dashboard
+- Secure authentication system
+- Responsive design
+- Full-stack architecture using Next.js
+
+---
+
+## 📸 Screenshots
+
+## Dashboard
+
+![Dashboard](./public/hero-image/hero-1.png)
+
+## Analytics
+
+![Analytics](./public/hero-image/hero-2.png)
+
+## Add job application
+
+![Workflow](./public/hero-image/hero-3.png)
+---
+
+## 📂 Project Structure
+
+```txt
+app/
+├── dashboard/
+├── sign-in/
+├── sign-up/
+
+components/
+├── dashboard/
+├── ui/
+
+lib/
+├── auth/
+├── db.ts
+├── models/
+
+public/
+├── hero-image/
+```
+
+## ⚙️ Environment Variables
+
+Create a `.env.local` file in the root directory:
+
+```env
+MONGODB_URI=your_mongodb_connection_string
+
+BETTER_AUTH_SECRET=your_secret
+
+BETTER_AUTH_URL=http://localhost:3000
+
+RESEND_API_KEY=your_resend_api_key
+```
+
+---
+
+## 🚀 Getting Started
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/your-username/job-application-tracker.git
+```
+
+### Navigate to Project Directory
+
+```bash
+cd job-application-tracker
+```
+
+### Install Dependencies
+
+```bash
+npm install
+```
+
+### Run Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```txt
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 📊 Analytics Metrics
 
-To learn more about Next.js, take a look at the following resources:
+The dashboard provides:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Total Applications
+- Active Applications
+- Interview Rate
+- Offer Rate
+- Success Rate
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+These metrics help users evaluate the effectiveness of their job search process.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🎯 Learning Outcomes
+
+This project demonstrates:
+
+- Full-stack development with Next.js
+- Authentication and authorization
+- MongoDB data modeling
+- Drag-and-drop interfaces
+- Data visualization with charts
+- TypeScript development
+- Responsive UI design
+- Modern React patterns
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+## 👨‍💻 Author
+
+Krishna Gopal
+
+GitHub: https://github.com/your-github-username
+LinkedIn: https://linkedin.com/in/your-linkedin-profile
