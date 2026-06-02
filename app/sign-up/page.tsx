@@ -24,88 +24,90 @@ export default function SignUp() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const [otp, setOtp] = useState("");
-  const [otpSent, setOtpSent] = useState(false);
-  const [otpVerified, setOtpVerified] = useState(false);
-  const [sendingOtp, setSendingOtp] = useState(false);
+  // TODO: Re-enable Resend OTP flow after domain verification.
+
+  // const [otp, setOtp] = useState("");
+  // const [otpSent, setOtpSent] = useState(false);
+  // const [otpVerified, setOtpVerified] = useState(false);
+  // const [sendingOtp, setSendingOtp] = useState(false);
 
   useEffect(() => {
     setName("");
     setEmail("");
     setPassword("");
-    setOtp("");
-    setOtpSent(false);
-    setOtpVerified(false);
+    // setOtp("");
+    // setOtpSent(false);
+    // setOtpVerified(false);
     setError("");
   }, []);
 
   const router = useRouter();
 
-  async function handleSendOtp() {
-    try {
-      setSendingOtp(true);
-      setError("");
+  // async function handleSendOtp() {
+  //   try {
+  //     setSendingOtp(true);
+  //     setError("");
 
-      const res = await fetch("/api/send-otp", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          name,
-        }),
-      });
+  //     const res = await fetch("/api/send-otp", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         email,
+  //         name,
+  //       }),
+  //     });
 
-      const data = await res.json();
+  //     const data = await res.json();
 
-      if (!res.ok) {
-        setError(
-          typeof data.error === "string"
-            ? data.error
-            : data.error?.message || "Something went wrong",
-        );
-        return;
-      }
+  //     if (!res.ok) {
+  //       setError(
+  //         typeof data.error === "string"
+  //           ? data.error
+  //           : data.error?.message || "Something went wrong",
+  //       );
+  //       return;
+  //     }
 
-      setOtpSent(true);
-    } catch (err) {
-      setError("Failed to send OTP");
-    } finally {
-      setSendingOtp(false);
-    }
-  }
-  async function handleVerifyOtp() {
-    try {
-      setError("");
+  //     setOtpSent(true);
+  //   } catch (err) {
+  //     setError("Failed to send OTP");
+  //   } finally {
+  //     setSendingOtp(false);
+  //   }
+  // }
+  // async function handleVerifyOtp() {
+  //   try {
+  //     setError("");
 
-      const res = await fetch("/api/verify-otp", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          otp,
-        }),
-      });
+  //     const res = await fetch("/api/verify-otp", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         email,
+  //         otp,
+  //       }),
+  //     });
 
-      const data = await res.json();
+  //     const data = await res.json();
 
-      if (!res.ok) {
-        setError(
-          typeof data.error === "string"
-            ? data.error
-            : data.error?.message || "Something went wrong",
-        );
-        return;
-      }
+  //     if (!res.ok) {
+  //       setError(
+  //         typeof data.error === "string"
+  //           ? data.error
+  //           : data.error?.message || "Something went wrong",
+  //       );
+  //       return;
+  //     }
 
-      setOtpVerified(true);
-    } catch (err) {
-      setError("OTP verification failed");
-    }
-  }
+  //     setOtpVerified(true);
+  //   } catch (err) {
+  //     setError("OTP verification failed");
+  //   }
+  // }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -114,11 +116,11 @@ export default function SignUp() {
     setLoading(true);
 
     try {
-      if (!otpVerified) {
-        setError("Please verify your email first");
-        setLoading(false);
-        return;
-      }
+      // if (!otpVerified) {
+      //   setError("Please verify your email first");
+      //   setLoading(false);
+      //   return;
+      // }
       const result = await signUp.email({
         name,
         email,
@@ -154,6 +156,12 @@ export default function SignUp() {
                 {error}
               </div>
             )}
+            <div className="rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
+              <strong>Demo Notice:</strong> Email verification is temporarily
+              disabled because a custom domain has not been configured for email
+              delivery yet. All other features of the application are fully
+              functional.
+            </div>
             <div className="space-y-2">
               <Label htmlFor="name" className="text-gray-700">
                 Name
@@ -179,16 +187,16 @@ export default function SignUp() {
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
-                  setOtpVerified(false);
-                  setOtpSent(false);
-                  setOtp("");
+                  // setOtpVerified(false);
+                  // setOtpSent(false);
+                  // setOtp("");
                 }}
-                disabled={otpVerified}
+                // disabled={otpVerified}
                 required
                 className="border-gray-300 focus:border-primary focus:ring-primary"
               />
             </div>
-            <Button
+            {/*<Button
               type="button"
               onClick={handleSendOtp}
               disabled={sendingOtp || !email || !name || otpVerified}
@@ -222,7 +230,7 @@ export default function SignUp() {
               <p className="text-sm font-medium text-green-600">
                 Email verified successfully
               </p>
-            )}
+            )}*/}
             <div className="space-y-2">
               <Label htmlFor="password" className="text-gray-700">
                 Password
@@ -242,7 +250,7 @@ export default function SignUp() {
             <Button
               type="submit"
               className="w-full bg-primary hover:bg-primary/90"
-              disabled={loading || !otpVerified}
+              disabled={loading /*|| !otpVerified*/}
             >
               {loading ? "Creating account..." : "Sign Up"}
             </Button>
